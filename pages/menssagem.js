@@ -1,8 +1,9 @@
 // import { motion } from "framer-motion";
 import Menu from "./components/nav/navbar"
 import Header from "./components/hearder/header"
-import MainDashobard from "./components/main/main_dashboard"
-
+import MainMessages from "./components/main/main_messages"
+import Alerts from "./components/alerts/save_sucesso"
+import Pagination from "./components/pagination/pagination"
 
 export default function Layout() {
   return (
@@ -11,7 +12,9 @@ export default function Layout() {
 
       <div className="flex-grow ">
         <Header></Header>
-        <MainDashobard></MainDashobard>
+        <MainMessages />
+        <Alerts />
+        <Pagination />
       </div>
     </div>
   );

@@ -3,10 +3,10 @@ import { motion } from "framer-motion";
 import BtnRequestPunctuation from "../buttons/btn_search";
 import SearchMedicalRecord from "../buttons/search_medical_record_sap";
 import SearchNotFound from "../several/search_not_found";
-import ListMedicalRecord from "../table_list/medical_record_list";
+import ListMedicalRecord from "../table_list/list_menssage";
+import ListMedicalRecordSolicitation from "../table_list/medical_record_solicitation";
 
 export default function Main() {
-  
   return (
     <motion.main
       transition={{ duration: 0.3, delay: 0 }}
@@ -16,7 +16,7 @@ export default function Main() {
     >
       <div className="w-full">
         <div className="mr-6">
-         <BtnRequestPunctuation/>
+          <BtnRequestPunctuation />
         </div>
       </div>
       <SearchMedicalRecord />
@@ -26,10 +26,8 @@ export default function Main() {
         </h2>
       </div>
       <SearchNotFound />
-
       <ListMedicalRecord />
-
-    
+      <ListMedicalRecordSolicitation />
     </motion.main>
   );
 }

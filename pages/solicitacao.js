@@ -1,18 +1,19 @@
-import { motion } from "framer-motion";
+// import { motion } from "framer-motion";
 import Menu from "./components/nav/navbar"
 import Header from "./components/hearder/header"
-import MainSap from "./components/main/mainsap"
+import Main from "./components/main/main"
 
 
 export default function Layout() {
   return (
-    <div className="flex bg-gray-100 min-h-screen">
+    <div className="flex min-h-screen">
       <Menu></Menu>
 
-      <div className="flex-grow text-gray-800">
+      <div className="flex-grow ">
         <Header></Header>
-        <MainSap></MainSap>
+        <Main></Main>
       </div>
     </div>
   );
 }
+

@@ -34,6 +34,18 @@ const menuItems = [
       
     ),
   },
+  {
+    name: "MENSAGEM",
+    route: "/menssagem",
+    svg: (
+      <img
+      src="/Communication.svg"
+      alt="Logo Sistema SSP"
+      className="h-10 w-50"
+    />
+      
+    ),
+  },
 ];
 
 const MenuItem = (item, active) => (
@@ -41,10 +53,10 @@ const MenuItem = (item, active) => (
     <motion.a
       variants={variantItem}
       key={item.name}
-      className="inline-flex items-center p-2 h-12 w-50 my-1 border-gray-100 hover:text-gray-700 hover:bg-gray-100 focus:text-gray-700 focus:bg-gray-400"
+      className="inline-flex items-center p-2 h-12 w-50 my-1 hover:text-gray-700 hover:bg-gray-200 focus:text-gray-700 focus:bg-gray-400"
     >
       {item.svg}
-      <span>{item.name}</span>
+      <span className="mx-2 font-normal">{item.name}</span>
     </motion.a>
   </Link>
 );
