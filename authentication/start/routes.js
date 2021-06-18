@@ -1,34 +1,42 @@
 'use strict'
 
-/** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 
 
 Route.group(() => {
-  Route.post("/registrar", "SessionController.register");
-  Route.post("/login", "SessionController.login");
+  Route.post("/registrar", "SessionController.register");//OK
+  Route.post("/login", "SessionController.login");//OK
 }).middleware(['guest']);
 
 Route.group(() => {
-  Route.get("/user", "SessionController.register").middleware(["IsAdmin"]);
-  Route.get("/user/:id", "SessionController.login").middleware(["IsAdmin"], "IsTrainees");
-  Route.patch("/user/:id", "SessionController.login").middleware(["IsAdmin", "IsTrainees"]);
-  Route.delete("/user/:id", "SessionController.login").middleware(["IsAdmin"]);
+  Route.get("/usuario/:id", "SessionController.show");//OK
+  Route.get("/usuarios", "SessionController.index");//OK
+  Route.get("/usuario/sair/:id", "SessionController.logout");
+  Route.patch("/usuario/editar/:id", "SessionController.update");//OK
+  Route.delete("/usuario/deletar/:id", "SessionController.destroy");
 }).middleware(['auth:jwt']);
 
 Route.group(() => {
-  Route.get("/semestres", "SessionController.index").middleware(["IsAdmin", "IsTrainees"]);
-  Route.get("/semestres/:id", "SessionController.show").middleware(["IsAdmin", "IsTrainees"]);
-  Route.post("/semestres", "SessionController.create").middleware(["IsAdmin"]);
-  Route.patch("/semestres/:id", "SessionController.update").middleware(["IsAdmin"]);
-  Route.delete("/semestres", "SessionController.destroy").middleware(["IsAdmin"]);
+  Route.get("/semestres", "SemesterController.index")
+  Route.get("/semestres/:id", "SemesterController.show")
+  Route.post("/semestres/cadastrar", "SemesterController.create")
+  Route.patch("/semestres/editar/:id", "SemesterController.update")
+  Route.delete("/semestres/deletar/:id", "SemesterController.destroy")
 }).middleware(['auth:jwt']);  
 
 Route.group(() => {
-  Route.get("/cursos", "SessionController.index").middleware(["IsAdmin", "IsTrainees"]);
-  Route.get("/cursos/:id", "SessionController.show").middleware(["IsAdmin", "IsTrainees"]);
-  Route.post("/cursos", "SessionController.create").middleware(["IsAdmin"]);
-  Route.patch("/cursos/:id", "SessionController.update").middleware(["IsAdmin"]);
-  Route.delete("/cursos", "SessionController.destroy").middleware(["IsAdmin"]);
+  Route.get("/cursos", "CourseController.index");
+  Route.get("/cursos/:id", "CourseController.show");
+  Route.post("/cursos", "CourseController.create");
+  Route.patch("/cursos/editar/:id", "CourseController.update");
+  Route.delete("/cursos/deletar/:id", "CourseController.destroy");
+}).middleware(['auth:jwt']); 
+
+Route.group(() => {
+  Route.get("/cursos", "MedicalRecordRequestController.index");
+  Route.get("/cursos/:id", "MedicalRecordRequestController.show");
+  Route.post("/cursos", "MedicalRecordRequestController.create");
+  Route.patch("/cursos/:id", "MedicalRecordRequestController.update");
+  Route.delete("/cursos", "MedicalRecordRequestController.destroy");
 }).middleware(['auth:jwt']); 
 

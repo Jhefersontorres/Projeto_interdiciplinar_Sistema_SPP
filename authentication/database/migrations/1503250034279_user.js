@@ -22,6 +22,7 @@ class UserSchema extends Schema {
       .inTable('semester')
       .onUpdate('CASCADE')
       .onDelete('CASCADE')
+      table.integer("roles").defaultTo("1").notNullable();
       table.integer("status").defaultTo("1").notNullable();
       table.timestamps()
     })

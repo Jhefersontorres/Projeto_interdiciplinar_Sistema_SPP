@@ -1,23 +1,59 @@
 "use strict";
 const User = use("App/Models/User");
+const { validateAll } = use("Validator");
 
-/** @typedef {import('@adonisjs/framework/src/Request')} Request */
-/** @typedef {import('@adonisjs/framework/src/Response')} Response */
-/** @typedef {import('@adonisjs/framework/src/View')} View */
-
-/**
- * Resourceful controller for interacting with semesters
- */
 class SessionController {
-  async register({ request, auth }) {
-    const user = await User.create(request.all());
-    await auth.login(user);
-    return user;
+  async register({ request, response }) {
+    try {
+      const erroMessage = {
+        "fullname.requerid": "Esse campo é obrigatório",
+        "fullname.min": "Nome de usuário deve ter mais que 4 caracteres",
+        "email.email": "Email informado invalido",
+        "email.requerid": "Campo de email obrigatório",
+        "email.unique": "Email já existe",
+        "password.min": "Senha deve conter minimo 4 caracteres",
+        "course_id.requerid": "Esse campo é obrigatório",
+        "semester_id.requerid": "Esse campo é obrigatório",
+      };
+
+      const validation = await validateAll(
+        request.all(),
+        {
+          fullname: "required|min:4|unique:users",
+          email: "required|email|unique:users",
+          password: "required|min:4",
+          course_id: "required",
+          semester_id: "required",
+        },
+        erroMessage
+      );
+
+      if (validation.fails()) {
+        return response.status(401).send({ message: validation.messages() });
+      }
+
+      const data = request.only([
+        "fullname",
+        "email",
+        "password",
+        "course_id",
+        "semester_id",
+        "roles",
+        "status",
+      ]);
+
+      const user = await User.create(data);
+
+      return user;
+    } catch (err) {
+      return response.status(500).send({ error: `Erro: ${err.message}` });
+    }
   }
 
   async login({ request, response, auth }) {
     try {
       const { email, password } = request.all();
+
       const validaToken = await auth.attempt(email, password);
 
       return validaToken;
@@ -26,15 +62,21 @@ class SessionController {
     }
   }
 
+  
+
   async show({ auth, params }) {
     if (auth.user.id != Number(params.id)) {
-      return "usuário permissão.";
+      return "Usuário sem permissão.";
     }
 
     return auth.user;
   }
 
-  async logout({ response, auth }) {
+  async logout({ response, auth, params }) {
+    if (auth.user.id != Number(params.id)) {
+      return "Usuário sem permissão.";
+    }
+
     try {
       const islogged = await auth.check();
       if (islogged) {
@@ -50,25 +92,24 @@ class SessionController {
   async update({ response, request, params, auth }) {
     if (auth.user.id != Number(params.id)) {
       return "Usuário sem permissão.";
-    } else {
-      try {
-        const user = await User.findOrFail(request.all(params.id));
-        user.merge(User);
-        await user.save();
-      } catch (error) {
-        return response
-          .status(500)
-          .send({ info: "Servidor esta apresentando erro" });
-      }
     }
+    const datauser = await User.findOrFail(params.id);
+    const data = request.all();
+    datauser.merge(data);
+    await datauser.save();
 
-    return user;
+    return datauser;
   }
 
-  async destroy({ }) {
-    const destroyUser = DestroyUser.query().where("id").update({ status: 0 });
+  async destroy({ response, params }) {
+    const destroyUser = User
+      .query()
+      .where("id", params.id)
+      .update({ status: 0 });
+    response.status(200).send({ message: "Usuário excluido com sucesso" });
     return destroyUser;
   }
+
 }
 
 module.exports = SessionController;
