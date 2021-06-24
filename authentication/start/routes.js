@@ -33,10 +33,27 @@ Route.group(() => {
 }).middleware(['auth:jwt']); 
 
 Route.group(() => {
-  Route.get("/cursos", "MedicalRecordRequestController.index");
-  Route.get("/cursos/:id", "MedicalRecordRequestController.show");
-  Route.post("/cursos", "MedicalRecordRequestController.create");
-  Route.patch("/cursos/:id", "MedicalRecordRequestController.update");
-  Route.delete("/cursos", "MedicalRecordRequestController.destroy");
+  Route.get("/tipo_paciente", "PatientTypeController.index");
+  Route.get("/tipo_paciente/:id", "PatientTypeController.show");
+  Route.post("/tipo_paciente/cadastrar", "PatientTypeController.create");
+  Route.patch("/tipo_paciente/editar/:id", "PatientTypeController.update");
+  Route.delete("/tipo_paciente/deletar/:id", "PatientTypeController.destroy");
+}).middleware(['auth:jwt']); 
+
+Route.group(() => {  
+  Route.get("/prontuario/solicitar", "MedicalRecordRequestController.requestedview");
+  Route.get("/prontuario/separado", "MedicalRecordRequestController.separateview");
+  Route.get("/prontuario/retirado", "MedicalRecordRequestController.withdrawnview");
+  Route.get("/prontuario/devolvido", "MedicalRecordRequestController.returnedview");
+  Route.get("/prontuario/solicitar/:id", "MedicalRecordRequestController.requestedview");
+  Route.get("/prontuario/separado/:id", "MedicalRecordRequestController.separateview");
+  Route.get("/prontuario/retirado/:id", "MedicalRecordRequestController.withdrawnview");
+  Route.get("/prontuario/devolvido/:id", "MedicalRecordRequestController.returnedview");
+
+  Route.post("/prontuario/solicitar", "MedicalRecordRequestController.createRequest");
+  Route.patch("/prontuario/separado/:id", "MedicalRecordRequestController.separated");
+  Route.patch("/prontuario/retirado/:id", "MedicalRecordRequestController.withdrawn");
+  Route.patch("/prontuario/devolvido/:id", "MedicalRecordRequestController.returned");
+  Route.delete("/prontuario/excluir/:id", "MedicalRecordRequestController.excluded");
 }).middleware(['auth:jwt']); 
 
