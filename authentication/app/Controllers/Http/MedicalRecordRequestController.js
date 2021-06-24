@@ -1,92 +1,79 @@
 'use strict'
 
-/** @typedef {import('@adonisjs/framework/src/Request')} Request */
-/** @typedef {import('@adonisjs/framework/src/Response')} Response */
-/** @typedef {import('@adonisjs/framework/src/View')} View */
+const Solicitation = use("App/Models/MedicalRecordRequest")
+const { validateAll } = use("Validator");
 
-/**
- * Resourceful controller for interacting with medicalrecordrequests
- */
+
 class MedicalRecordRequestController {
-  /**
-   * Show a list of all medicalrecordrequests.
-   * GET medicalrecordrequests
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async index ({ request, response, view }) {
+  async createRequest ({ request, response, auth }) {
+
+      const { id } = auth.user;
+       const {name_patient, surname, patient_types_id, date_solicitation } = request.all();
+        const Solicitations = await Solicitation.create({name_patient, surname, patient_types_id, date_solicitation, user_id: id });
+
+         response.status(200).send({ message: "Tipo paciente cadastrado com sucesso" });
+
+      return Solicitations;
+
   }
 
-  /**
-   * Render a form to be used for creating a new medicalrecordrequest.
-   * GET medicalrecordrequests/create
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async create ({ request, response, view }) {
+//View
+  async requestedview ({ view }) {
+    const MedicalRecordRequest = Solicitation.query().where("status", 1).select("*").fetch();
+    return MedicalRecordRequest;
   }
 
-  /**
-   * Create/save a new medicalrecordrequest.
-   * POST medicalrecordrequests
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async store ({ request, response }) {
+  async separateview ({ view }) {
+    const MedicalRecordRequest = Solicitation.query().where("status", 2).select("*").fetch();
+    return MedicalRecordRequest;
   }
 
-  /**
-   * Display a single medicalrecordrequest.
-   * GET medicalrecordrequests/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async show ({ params, request, response, view }) {
+  async withdrawnview ({ view}) {
+    const MedicalRecordRequest = Solicitation.query().where("status", 3).select("*").fetch();
+    return MedicalRecordRequest;
   }
 
-  /**
-   * Render a form to update an existing medicalrecordrequest.
-   * GET medicalrecordrequests/:id/edit
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async edit ({ params, request, response, view }) {
+  async returnedview ({ view }) {
+    const MedicalRecordRequest = Solicitation.query().where("status", 4).select("*").fetch();
+    return MedicalRecordRequest;
   }
 
-  /**
-   * Update medicalrecordrequest details.
-   * PUT or PATCH medicalrecordrequests/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async update ({ params, request, response }) {
+ //UPDATES STATUS SOLICITATIONS MEDICAL RECORD REQUEST
+  async separated ({ params, response, auth  }) {
+
+    const { id } = auth.user;
+    const SeparatedMedicalRecord = Solicitation.query()
+      .where("id", params.id)
+      .update({ status: 2, user_id_update: id });
+      response.status(200).send({ message: "Prontuário do paciente separado" });
+    return SeparatedMedicalRecord;
   }
 
-  /**
-   * Delete a medicalrecordrequest with id.
-   * DELETE medicalrecordrequests/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async destroy ({ params, request, response }) {
+  async withdrawn ({ params, response, auth }) {
+    const { id } = auth.user;
+    const MedicalRecordWithdrawn = Solicitation.query()
+      .where("id", params.id)
+      .update({ status: 3, user_id_update: id });
+      response.status(200).send({ message: "Prontuário do paciente retirado" });
+      return MedicalRecordWithdrawn;
+  }
+
+  async returned ({ params, response, auth  }) {
+    const { id } = auth.user;
+    const ReturnedMedicalRecord = Solicitation.query()
+      .where("id", params.id)
+      .update({ status: 4, user_id_update: id });
+      response.status(200).send({ message: "Prontuário do paciente devolvido" });
+      return ReturnedMedicalRecord;
+  }
+
+  async excluded  ({ params, response, auth}) {
+    const { id } = auth.user;
+    const ReturnedMedicalRecord = Solicitation.query()
+      .where("id", params.id)
+      .update({ status: 0, user_id_update: id });
+      response.status(200).send({ message: "Prontuário do paciente excluido" });
+      return ReturnedMedicalRecord;
   }
 }
 
