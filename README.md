@@ -1,5 +1,6 @@
 <div align="center">
-  <h1>Projeto Interdiciplina SISTEMA DE SOLICITAÇÃO DE PRONTUÁRIO DE PACIENTE - SPP</h1>
+  <h1>PROJETO INTERDISCIPLINAR</h1>
+  <h1>SISTEMA DE SOLICITAÇÃO DE PRONTUÁRIO DE PACIENTE - SPP</h1>
 </div>
 
 
