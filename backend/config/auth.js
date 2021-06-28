@@ -71,6 +71,7 @@ module.exports = {
     scheme: 'jwt',
     uid: 'email',
     password: 'password',
+    roles: 'roles',
     options: {
       secret: Env.get('APP_KEY')
     }

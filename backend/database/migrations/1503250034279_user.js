@@ -7,11 +7,23 @@ class UserSchema extends Schema {
   up () {
     this.create('users', (table) => {
       table.increments()
-      table.string('name', 80).notNullable()
+      table.string('fullname', 80).notNullable()
       table.string('email', 254).notNullable().unique()
       table.string('password', 60).notNullable()
-      table.string('couser').notNullable()
-      table.string('semester').notNullable()
+      table.integer("course_id")
+      .unsigned()
+      .references('id')
+      .inTable('course')
+      .onUpdate('CASCADE')
+      .onDelete('CASCADE')
+      table.integer("semester_id")
+      .unsigned()
+      .references('id')
+      .inTable('semester')
+      .onUpdate('CASCADE')
+      .onDelete('CASCADE')
+      table.integer("roles").defaultTo("1").notNullable();
+      table.integer("status").defaultTo("1").notNullable();
       table.timestamps()
     })
   }
