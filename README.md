@@ -2,10 +2,10 @@
     <img width=40% src="/public/logo.svg">
     <h1> ##  Projeto Interdiciplina SISTEMA DE SOLICITAÇÃO DE PRONTUÁRIO DE PACIENTE - SPP</h1>
 </div>
-##  Projeto Interdiciplina SISTEMA DE SOLICITAÇÃO DE PRONTUÁRIO DE PACIENTE - SPP
+
 
 <div align="center">
-    <img width=40% src="frontend/public/apresentação.svg">
+    <img src="frontend/public/apresentação.svg">
 </div>
 
 ## 💻 Projeto
